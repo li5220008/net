@@ -11,7 +11,7 @@ public class UdpSend {
         try {
             DatagramSocket ds = new DatagramSocket(3999);
             String info = "how do you do!";
-            DatagramPacket dp = new DatagramPacket(info.getBytes(),info.getBytes().length,InetAddress.getByName("192.168.2.103"),3000);
+            DatagramPacket dp = new DatagramPacket(info.getBytes(),info.getBytes().length,InetAddress.getByName("localhost"),3000);
             ds.send(dp);
             ds.close();
         } catch (Exception e) {
