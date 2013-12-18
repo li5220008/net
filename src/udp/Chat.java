@@ -1,3 +1,5 @@
+package udp;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,7 +9,6 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -80,10 +81,10 @@ public class Chat extends Frame {
     }
 
     public static void main(String[] args){
-        System.out.println("Starting Chat.......");
+        System.out.println("Starting udp.Chat.......");
         Chat mainFrame = new Chat();
         mainFrame.setSize(300, 400);
-        mainFrame.setTitle("Chat");
+        mainFrame.setTitle("udp.Chat");
         mainFrame.setVisible(true);
         mainFrame.setResizable(false);
 
