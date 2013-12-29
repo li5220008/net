@@ -1,6 +1,5 @@
 package tcp;
 
-import sun.plugin2.message.Serializer;
 
 import java.io.Serializable;
 
