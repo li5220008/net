@@ -1,4 +1,5 @@
 package tcp;
+import netty.LoggingInfo;
 import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -20,9 +21,15 @@ import org.junit.Test;
 import tcp.HCS;
 import tcp.HttpClientServiceImpl;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NavigableSet;
+import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -180,9 +187,45 @@ public class HttpClientServiceImplTest {
                 response.close();
             }*/
 
-            String googleUrl="https://www.google.com.hk/webhp?hl=zh-CN";
+            /*String googleUrl="https://www.google.com.hk/webhp?hl=zh-CN";
             String html0 =hcs.url(googleUrl).get();
-            System.out.println(html0);
+            System.out.println(html0);*/
+
+            /*BlockingQueue queue = new ArrayBlockingQueue(1024);
+            queue.put("test");
+            System.out.println(queue.take());*/
+
+            /*BlockingDeque<String> deque = new LinkedBlockingDeque<String>();
+
+            deque.addFirst("1");
+            deque.addLast("2");
+
+            String two = deque.takeLast();
+            String one = deque.takeFirst();
+            System.out.println(String.format("firse:%s last:%s",one,two));*/
+
+            /*LoggingInfo logInfo = new LoggingInfo("MIKE", "MECHANICS");
+            System.out.println(logInfo.toString());
+
+            ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream("logInfo.text"));
+            o.writeObject(logInfo);
+            o.close();*/
+
+            /*ObjectInputStream in =new ObjectInputStream(new FileInputStream("logInfo.text"));
+            LoggingInfo logInfo = (LoggingInfo)in.readObject();
+            System.out.println(logInfo.toString());*/
+
+            ConcurrentNavigableMap map = new ConcurrentSkipListMap();
+
+            map.put("1", "one");
+            map.put("b", "two");
+            map.put("a", "four");
+            map.put("3", "three");
+            map.put("5", "five");
+
+            ConcurrentNavigableMap headMap = map.headMap("a");
+            NavigableSet ns = map.descendingKeySet();
+            System.out.println(headMap);
 
 
 
