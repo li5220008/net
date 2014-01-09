@@ -23,21 +23,32 @@ public class SSDBServiceTest {
     @Test
     public void testCreateZsetData() throws Exception {
         sb.createData();
-        Response response = sb.zrscan("test","",null,Double.MAX_VALUE,100);
-        response.print();
+        /*Response response = sb.zrscan("test","",null,Double.MAX_VALUE,100);
+        response.print();*/
     }
 
     @Test
     public void testCreateHsetData() throws Exception{
         sb.createHsetData();
-        Response resp = sb.hscan("test","a","z",10);
-        resp.print();
+        /*Response resp = sb.hscan("test","a","z",10);
+        resp.print();*/
+    }
 
+    /*@Test
+    public void testQueryHsetPerformance() throws Exception{
+        //sb.queryHsetPerformance();
+        sb.queryHsetPerformance("32223816867227","32223823848488",100);
+
+    }
+    @Test
+    public void testQueryZsetPerformance()throws Exception{
+        //sb.queryZsetPerformance();
+        sb.queryZsetPerformance(Double.valueOf(100),Double.valueOf(12222),10);
     }
 
     @After
     public void after(){
         sb.close();
-    }
+    }*/
 
 }
