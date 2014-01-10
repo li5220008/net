@@ -1,6 +1,5 @@
 package ssdb;
 
-import com.udpwork.ssdb.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,11 +12,11 @@ import org.junit.Test;
  */
 public class SSDBServiceTest {
 
-    public static SSDBService sb = null;
+    public static SSDBPerformanceTest sb = null;
 
     @Before
     public void initData() throws Exception{
-        sb = new SSDBService("192.168.98.250",9966);
+        sb = new SSDBPerformanceTest("192.168.98.250",9966);
     }
 
     @Test
@@ -34,21 +33,21 @@ public class SSDBServiceTest {
         resp.print();*/
     }
 
-    /*@Test
-    public void testQueryHsetPerformance() throws Exception{
-        //sb.queryHsetPerformance();
-        sb.queryHsetPerformance("32223816867227","32223823848488",100);
+    @Test
+    public void testQuery(){
+        sb.query();
+    }
+
+    @Test
+    public void testConcurrentyQuery() throws Exception{
+        sb.concurrentyQuery();
 
     }
-    @Test
-    public void testQueryZsetPerformance()throws Exception{
-        //sb.queryZsetPerformance();
-        sb.queryZsetPerformance(Double.valueOf(100),Double.valueOf(12222),10);
-    }
+
 
     @After
     public void after(){
         sb.close();
-    }*/
+    }
 
 }
