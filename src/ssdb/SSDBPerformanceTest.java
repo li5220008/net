@@ -17,7 +17,7 @@ public class SSDBPerformanceTest extends SSDB {
     private int defaultData = 100000;//默认创建条数
     //private int defaultData = 1000;//默认创建条数
     //private int interval = defaultData/10;//秒表间隔多少条开始计时
-    private int queryNum = 10000;//并发查询多少次
+    private int queryNum = 100000;//并发查询多少次
     private int interval = queryNum/10;//秒表间隔多少条开始计时
     private String n = "test";//测试的集合名称
     private int number;
@@ -115,8 +115,8 @@ public class SSDBPerformanceTest extends SSDB {
             }
         }
         System.out.println(sw.prettyPrint());
-        System.out.println(String.format("===========qps==================="));
-        System.out.println(queryNum/sw.getTotalTimeSeconds());
+        System.out.println(String.format("==================qps==================="));
+        System.out.println(queryNum/(sw.getTotalTimeMillis()/1000));
     }
 
     public void query(){
@@ -127,8 +127,9 @@ public class SSDBPerformanceTest extends SSDB {
         ExecutorService pool = Executors.newCachedThreadPool();
         CountDownLatch cdt = new CountDownLatch(queryNum);
         Terminator terminator = new Terminator(cdt,this);
-        pool.execute(terminator);
-        for(int i=0; i<queryNum;i++){
+        //pool.execute(terminator);
+        new Thread(terminator).start();
+        for(int i=0; i<queryNum+10;i++){
             pool.execute(new Queryer(cdt,this));
         }
         pool.shutdown();

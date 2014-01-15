@@ -27,6 +27,7 @@ public class Terminator implements Runnable {
         try {
             sw.start();
             cdt.await();
+            System.out.println(String.format("终结者%s 计数器%s",Thread.currentThread().getName(),cdt.getCount()));
             sw.stop();
             System.out.println(sw.prettyPrint());
             terminat();
