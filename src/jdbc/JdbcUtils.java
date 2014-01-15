@@ -1,5 +1,7 @@
 package jdbc;
 
+import jdbc.datasource.MyDataSource;
+
 import java.sql.*;
 
 /**
@@ -9,27 +11,21 @@ import java.sql.*;
  * Time: 上午10:22
  */
 public final class JdbcUtils {
-    private static final String url = "jdbc:mysql://localhost/jdbc";
-    private static final String user = "root";
-    private static final String passwd = "root123";
+    private static MyDataSource myDataSource = null;
     private JdbcUtils(){};
     static {
         try {
             Class.forName("com.mysql.jdbc.Driver");
+            myDataSource = new MyDataSource();
+            //myDataSource = new MyDataSource0();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
         }
     }
 
-    public static Connection getConnection() {
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(url, user, passwd);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return conn;
+    public static Connection getConnection() throws Exception{
+        return myDataSource.getConnection();
     }
 
     public static void free(ResultSet rs, Statement st, Connection conn){
@@ -47,7 +43,8 @@ public final class JdbcUtils {
                 try {
                     if(conn != null)
                         conn.close();
-                } catch (SQLException e) {
+                        //myDataSource.free(conn);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

@@ -12,6 +12,7 @@ public class Base {
     public static void main(String[] args)throws Exception{
         //test();
         template();
+        testConnection();
     }
     static void template() throws Exception{
         Connection conn = null;
@@ -20,6 +21,7 @@ public class Base {
         try {
             //2建立连接
             conn = JdbcUtils.getConnection();
+            //conn = JdbcUtilsSingle.getInstance().getConnection();
             //3创建执行SQL语句(Statement)
             st = conn.createStatement();
             //4执行语句
@@ -32,6 +34,14 @@ public class Base {
         } finally {
             //6释放资源
             JdbcUtils.free(rs,st,conn);
+            //JdbcUtilsSingle.getInstance().free(rs,st,conn);
+        }
+    }
+    static void testConnection() throws Exception{
+        for(int i=0;i<100;i++){
+            Connection conn = JdbcUtils.getConnection();
+            System.out.println(conn);
+            JdbcUtils.free(null,null,conn);
         }
     }
     /*static void template() throws Exception{
