@@ -1,6 +1,7 @@
 package ssdb;
 
 import com.udpwork.ssdb.*;
+import jdbc.JdbcUtils;
 
 /**
  * SSDB Java client SDK demo.
@@ -10,7 +11,7 @@ public class Demo {
 		SSDB ssdb = null;
 		Response resp;
 		byte[] b;
-		ssdb = new SSDB("192.168.98.250", 9966);
+		ssdb = SSDBUtils.getSSDB();
 		
 		/* kv */
 		System.out.println("---- kv -----");
