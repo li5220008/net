@@ -2,8 +2,6 @@ package ssdb.datasource;
 
 import com.udpwork.ssdb.SSDB;
 
-import java.sql.SQLClientInfoException;
-import java.sql.SQLException;
 import java.util.LinkedList;
 
 /**
@@ -41,15 +39,11 @@ public class DataSource {
             if(ssdbConnectionsPool.size()>0){
                 return ssdbConnectionsPool.removeFirst();
             }
-            if(currentCount<10){
+            if(currentCount<maxCount){
                 currentCount++;
                 return createSSDB();
             }
             throw new Exception("没有连接了");
         }
-    }
-
-    public void free(SSDB ssdb) {
-        this.ssdbConnectionsPool.addLast(ssdb);
     }
 }

@@ -1,7 +1,9 @@
 package ssdb;
 
 import com.udpwork.ssdb.*;
-import jdbc.JdbcUtils;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * SSDB Java client SDK demo.
@@ -11,7 +13,7 @@ public class Demo {
 		SSDB ssdb = null;
 		Response resp;
 		byte[] b;
-		ssdb = SSDBUtils.getSSDB();
+		ssdb = SSDBUtil.getSSDB();
 		
 		/* kv */
 		System.out.println("---- kv -----");
@@ -89,5 +91,30 @@ public class Demo {
 	
 		//
 		ssdb.close();
+
+        concurrentTest();
 	}
+
+    public static void concurrentTest(){
+        Executor pool = Executors.newFixedThreadPool(10);
+        for(int i=0;i<100;i++){
+            Runnable task = new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println(Thread.currentThread().getName());
+                    SSDB ssdb = null;
+                    try {
+                        ssdb = SSDBUtil.getSSDB();
+                        System.out.println(ssdb);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        ssdb.close();
+                        //ssdb.close();
+                    }
+                }
+            };
+            pool.execute(task);
+        }
+    }
 }
