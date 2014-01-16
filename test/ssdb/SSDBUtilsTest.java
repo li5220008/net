@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 public class SSDBUtilsTest {
     @Test
     public void test(){
-        Executor pool = Executors.newFixedThreadPool(10);
+        /*Executor pool = Executors.newFixedThreadPool(10);
         for(int i=0;i<100;i++){
             Runnable task = new Runnable() {
                 @Override
@@ -34,8 +34,8 @@ public class SSDBUtilsTest {
                 }
             };
             pool.execute(task);
-        }
-        /*for(int i=0;i<100;i++){
+        }*/
+        for(int i=0;i<100;i++){
             SSDB ssdb = null;
             try {
                ssdb = SSDBUtil.getSSDB();
@@ -45,6 +45,6 @@ public class SSDBUtilsTest {
             } finally {
                 ssdb.close();
             }
-        }*/
+        }
     }
 }

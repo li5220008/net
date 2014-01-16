@@ -23,25 +23,25 @@ public class DataSource {
         try {
             for(int i=0;i<iniCount;i++){
                 currentCount++;
-                ssdbConnectionsPool.addLast(createSSDB());
+                ssdbConnectionsPool.addLast(createSSDB(null));
             }
         } catch (Exception e) {
             throw new ExceptionInInitializerError(e);
         }
     }
 
-    public SSDB createSSDB() throws Exception {
-        return new MySSDB(host,port,timeoutMs,this);
+    public SSDB createSSDB(ThreadLocal<SSDB> cacheSSDB) throws Exception {
+        return new MySSDB(host,port,timeoutMs,this,cacheSSDB);
     }
 
-    public SSDB getSSDB() throws Exception{
+    public SSDB getSSDB(ThreadLocal<SSDB> cacheSSDB) throws Exception{
         synchronized (ssdbConnectionsPool){
             if(ssdbConnectionsPool.size()>0){
                 return ssdbConnectionsPool.removeFirst();
             }
             if(currentCount<maxCount){
                 currentCount++;
-                return createSSDB();
+                return createSSDB(cacheSSDB);
             }
             throw new Exception("没有连接了");
         }

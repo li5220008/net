@@ -12,15 +12,15 @@ import ssdb.datasource.DataSource;
 public class SSDBUtil {
     private static DataSource dataSource = new DataSource();
     static ThreadLocal<SSDB> cacheSSDB = new ThreadLocal<SSDB>();//包装一下，线程之间隔离
-    public static SSDB safeGetSSDB() throws Exception{
+    public static SSDB getSSDB() throws Exception{
         if(cacheSSDB.get() != null){
             return cacheSSDB.get();
         }
-        SSDB ssdb = dataSource.getSSDB();
+        SSDB ssdb = dataSource.getSSDB(cacheSSDB);
         cacheSSDB.set(ssdb);
         return ssdb;
     }
-    public static SSDB getSSDB() throws Exception{
-        return dataSource.getSSDB();
-    }
+    /*public static SSDB getSSDB() throws Exception{
+        return dataSource.getSSDB(cacheSSDB);
+    }*/
 }

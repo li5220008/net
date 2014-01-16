@@ -96,21 +96,23 @@ public class Demo {
 	}
 
     public static void concurrentTest(){
-        Executor pool = Executors.newFixedThreadPool(10);
-        for(int i=0;i<100;i++){
+        Executor pool = Executors.newFixedThreadPool(100);
+        for(int i=0;i<1000;i++){
             Runnable task = new Runnable() {
                 @Override
                 public void run() {
-                    System.out.println(Thread.currentThread().getName());
-                    SSDB ssdb = null;
-                    try {
-                        ssdb = SSDBUtil.getSSDB();
-                        System.out.println(ssdb);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        ssdb.close();
-                        //ssdb.close();
+                    synchronized (this){
+                        System.out.println(Thread.currentThread().getName());
+                        SSDB ssdb = null;
+                        try {
+                            ssdb = SSDBUtil.getSSDB();
+                            System.out.println(ssdb);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            ssdb.close();
+                            //ssdb.close();
+                        }
                     }
                 }
             };
