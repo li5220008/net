@@ -96,8 +96,8 @@ public class Demo {
 	}
 
     public static void concurrentTest(){
-        Executor pool = Executors.newFixedThreadPool(100);
-        for(int i=0;i<1000;i++){
+        Executor pool = Executors.newFixedThreadPool(50);
+        for(int i=0;i<100;i++){
             Runnable task = new Runnable() {
                 @Override
                 public void run() {

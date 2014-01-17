@@ -14,8 +14,10 @@ public class DataSource {
     private String host = "192.168.98.250";
     private int port = 9966;
     private int timeoutMs = 5000;
+    private int minIdle = 10;//最小空闲数
     private int iniCount = 5;//初始化连接
     private int maxCount = 10;//最大连接数
+
     int currentCount = 0;//当前连接数
     LinkedList<SSDB> ssdbConnectionsPool = new LinkedList<SSDB>();
 
