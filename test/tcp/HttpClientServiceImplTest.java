@@ -1,5 +1,6 @@
 package tcp;
 import netty.LoggingInfo;
+import io.netty.channel.ChannelFuture;
 import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -21,6 +22,7 @@ import org.junit.Test;
 import tcp.HCS;
 import tcp.HttpClientServiceImpl;
 
+import java.net.SocketAddress;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -188,6 +190,7 @@ public class HttpClientServiceImplTest {
             }*/
 
             /*String googleUrl="https://www.google.com.hk/webhp?hl=zh-CN";
+            /*String googleUrl="https://www.google.com.hk/webhp?hl=zh-CN";
             String html0 =hcs.url(googleUrl).get();
             System.out.println(html0);*/
 
@@ -215,7 +218,7 @@ public class HttpClientServiceImplTest {
             LoggingInfo logInfo = (LoggingInfo)in.readObject();
             System.out.println(logInfo.toString());*/
 
-            ConcurrentNavigableMap map = new ConcurrentSkipListMap();
+            /*ConcurrentNavigableMap map = new ConcurrentSkipListMap();
 
             map.put("1", "one");
             map.put("b", "two");
@@ -226,6 +229,8 @@ public class HttpClientServiceImplTest {
             ConcurrentNavigableMap headMap = map.headMap("a");
             NavigableSet ns = map.descendingKeySet();
             System.out.println(headMap);
+            System.out.println(testFinal(new A("k","t")));*/
+
 
 
 
@@ -233,6 +238,32 @@ public class HttpClientServiceImplTest {
             e.printStackTrace();
         } finally {//保证释放链接
             hcs.close();
+        }
+    }
+
+    private String testFinal(final A a) {
+//        a = new A("c","d");
+        /*a.a = "a";
+        a.b = "b";*/
+        return a.toString();
+
+    }
+
+    class A {
+        String a;
+        String b;
+
+        A(String a, String b) {
+            this.a = a;
+            this.b = b;
+        }
+
+        @Override
+        public String toString() {
+            return "A{" +
+                    "a='" + a + '\'' +
+                    ", b='" + b + '\'' +
+                    '}';
         }
     }
 }

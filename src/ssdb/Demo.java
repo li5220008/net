@@ -13,6 +13,7 @@ public class Demo {
      * 集合类型
      */
     public enum Type {
+
         String("string"),
         List("list"),
         Set("set"),
