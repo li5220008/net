@@ -11,8 +11,8 @@ import java.util.LinkedList;
  * Time: 上午9:18
  */
 public class DataSource {
-    private String host = "192.168.98.250";
-    private int port = 9966;
+    private String host = "127.0.0.1";
+    private int port = 8888;
     private int timeoutMs = 5000;
     private int minIdle = 10;//最小空闲数
     private int iniCount = 5;//初始化连接

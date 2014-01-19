@@ -10,7 +10,7 @@ import java.util.Properties;
  * Date: 14-1-15
  * Time: 下午2:44
  */
-public class MyConnection implements Connection{
+public abstract class MyConnection implements Connection{
     private Connection realConnection;
     private MyDataSource myDataSource;
     private int maxUsedCound =5;

@@ -13,7 +13,7 @@ import java.util.LinkedList;
  * Date: 14-1-15
  * Time: 上午11:31
  */
-public class MyDataSource1 implements DataSource {
+public class MyDataSource1 {
     private static String url = "jdbc:mysql://localhost/jdbc";
     private static String user = "root";
     private static String passwd = "root123";
@@ -58,40 +58,5 @@ public class MyDataSource1 implements DataSource {
     }
     public void free(Connection conn){
         connectionPool.addLast(conn);
-    }
-
-    @Override
-    public Connection getConnection(String username, String password) throws SQLException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public PrintWriter getLogWriter() throws SQLException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void setLogWriter(PrintWriter out) throws SQLException {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void setLoginTimeout(int seconds) throws SQLException {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public int getLoginTimeout() throws SQLException {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public <T> T unwrap(Class<T> iface) throws SQLException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public boolean isWrapperFor(Class<?> iface) throws SQLException {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
