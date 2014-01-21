@@ -1,5 +1,4 @@
 package tcp;
-import netty.LoggingInfo;
 import io.netty.channel.ChannelFuture;
 import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;

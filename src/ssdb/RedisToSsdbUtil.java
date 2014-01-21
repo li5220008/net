@@ -2,7 +2,6 @@ package ssdb;
 
 import com.udpwork.ssdb.SSDB;
 import redis.clients.jedis.Jedis;
-import tcp.ObjectClient;
 
 import java.util.List;
 import java.util.Set;
@@ -17,7 +16,12 @@ public class RedisToSsdbUtil {
     public static void doit(){
          // can be one of "none", "string", "list", "set". "none" is returned if the key does not exist.
         Set<String> keys = jedis.keys("*");
+        int count =0;
+        int total =keys.size();
         for(String key : keys){
+            if(++count %2 ==1){
+                System.out.println(String.format("%s/%s\n",count,total));
+            }
             if(key.equals("string")){
                 String val = jedis.get(key);
                 try {
@@ -25,14 +29,16 @@ public class RedisToSsdbUtil {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }else if(key.equals("list")){
+            /*}else if(key.equals("list")){   //ssdb java端暂时不支持
                 List<String> lists = jedis.lrange(key, 0, -1);
                 for (String list: lists){
                     ;
-                }
+                }*/
             }else if(key.equals("set")){
-                //jedis.zrange(key,0,-1,true);
-
+                Set<String> zset = jedis.zrange(key,0,-1);
+                for(String member :zset){
+                    //jedis.zadd(key,1,member);
+                }
             }else {
 
             }
@@ -47,5 +53,18 @@ public class RedisToSsdbUtil {
         jedis.set("foo", "bar");
         String value = jedis.get("foo");
         System.out.println(value);
+        jedis.zadd("hacker", 107, "kk0");
+        jedis.zadd("hacker", 101, "kk2");
+        jedis.zadd("hacker", 103, "kk1");
+        jedis.zadd("hacker", 105, "kk3");
+        jedis.zadd("hacker",106,"kk4");
+
+        System.out.println(jedis.zrange("hacker", 0, -1));
+        
+
+        //System.out.println(jedis.keys("hacko*"));;
+        //doit();
+
+
     }
 }
