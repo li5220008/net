@@ -1,6 +1,7 @@
 package ssdb;
 
 import com.udpwork.ssdb.*;
+import ssdb.conf.SSDBPoolConfig;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -9,30 +10,16 @@ import java.util.concurrent.Executors;
  * SSDB Java client SDK demo.
  */
 public class Demo {
-    /**
-     * 集合类型
-     */
-    public enum Type {
-        String("string"),
-        List("list"),
-        Set("set"),
-        None("none");
-        private String type;
-        Type(String type) {
-            this.type = type;
-        }
-        public String getType(){
-            return type;
-        }
-    }
-
     public static void main(String[] args) throws Exception {
+        SSDBPool pool = new SSDBPool(new SSDBPoolConfig());
+
         String ss = "list";
 
         SSDB ssdb = null;
         Response resp;
         byte[] b;
-        ssdb = SSDBUtil.getSSDB();
+        //ssdb = SSDBUtil.getSSDB();
+        ssdb = pool.getResource();
 
         /* kv */
         System.out.println("---- kv -----");

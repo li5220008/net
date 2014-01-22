@@ -4,8 +4,11 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.exceptions.JedisConnectionException;
+import ssdb.exceptions.SSDBConnectionException;
 
 import java.util.Set;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Desc:
@@ -14,9 +17,11 @@ import java.util.Set;
  * Time: 下午1:34
  */
 public class JedisUtl {
+    static JedisPool pool = new JedisPool(new JedisPoolConfig(), "localhost");
+    static Jedis jedis;
     public static void main(String[] args){
-        JedisPool pool = new JedisPool(new JedisPoolConfig(), "localhost");
-        Jedis jedis = pool.getResource();
+
+        jedis = pool.getResource();
         try {
             /// ... do stuff here ... for example
             jedis.set("foo", "bar");
@@ -35,6 +40,39 @@ public class JedisUtl {
                 pool.returnResource(jedis);
         }
 /// ... when closing your application:
-        pool.destroy();
+        //pool.destroy();
+
+        Executor threaPool = Executors.newFixedThreadPool(10);
+        for (int i = 0; i < 20; i++) {
+            Runnable task = new Runnable() {
+                public void run() {
+                    synchronized (this) {
+                        System.out.println(Thread.currentThread().getName());
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            Jedis jedis0 = pool.getResource();
+                            System.out.println(jedis0);
+                        }catch (SSDBConnectionException e) {
+                            // returnBrokenResource when the state of the object is unrecoverable
+                            if (null != jedis) {
+                                //pool.returnBrokenResource(jedis);
+                                jedis = null;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            if (null != jedis)
+                                jedis.disconnect();
+                            //pool.returnResource(jedis);
+                        }
+                    }
+                }
+            };
+            threaPool.execute(task);
+        }
     }
 }
