@@ -12,6 +12,14 @@ import java.nio.ByteBuffer;
  */
 public class FileChannel {
     public static void main(String[] args) throws Exception{
+        /*System.out.println((byte)'A');
+        System.out.println((byte)'\t');*/
+        /*for(byte i=' ';i<'~';i++){
+            System.out.println(i);
+        }*/
+        /*System.out.println((byte)' ');
+        System.out.println((byte)'~');*/
+        //System.out.println(33-' ');
         RandomAccessFile aFile = new RandomAccessFile("test.txt", "rw");
         java.nio.channels.FileChannel inChannel = aFile.getChannel();
 
