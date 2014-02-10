@@ -30,15 +30,20 @@ public class FileOperation {
         System.out.println(new String(bytes));*/
 
 
-        FileOutputStream fout = new FileOutputStream("README.md");
+        FileOutputStream fout = new FileOutputStream("insertest.txt");
         FileChannel fcout = fout.getChannel();
 
         while (true){
+            System.out.println(buffer.limit());
             buffer.clear();
             int r = fcIn.read(buffer);
             if(r==-1) break;
             buffer.flip();
+            System.out.println(buffer.limit());
             fcout.write(buffer);
         }
+
+
+
     }
 }

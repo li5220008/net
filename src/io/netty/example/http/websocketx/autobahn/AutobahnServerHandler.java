@@ -101,7 +101,7 @@ public class AutobahnServerHandler extends ChannelInboundHandlerAdapter {
     private void handleWebSocketFrame(ChannelHandlerContext ctx, WebSocketFrame frame) {
         if (logger.isLoggable(Level.FINE)) {
             logger.fine(String.format(
-                    "Channel %s received %s", ctx.channel().hashCode(), StringUtil.simpleClassName(frame)));
+                    "FileChannel %s received %s", ctx.channel().hashCode(), StringUtil.simpleClassName(frame)));
         }
 
         if (frame instanceof CloseWebSocketFrame) {
