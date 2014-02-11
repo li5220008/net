@@ -70,7 +70,7 @@ public class ChargenServer {
                         client.configureBlocking(false);
                         SelectionKey key2 = client.register(selector, SelectionKey.OP_WRITE);
                         ByteBuffer buffer = ByteBuffer.allocate(74);
-                        buffer.put(rotation,0,72);
+                        //buffer.put(rotation,0,72);
                         buffer.put((byte)'\r');
                         buffer.put((byte)'\n');
                         buffer.flip();
@@ -80,14 +80,18 @@ public class ChargenServer {
                         ByteBuffer buffer = (ByteBuffer)key.attachment();
                         if(!buffer.hasRemaining()){
                             buffer.rewind();
-                            int first = buffer.get();
+                            /*int first = buffer.get();
                             buffer.rewind();
                             int position = first - ' ' + 1;
-                            buffer.put(rotation,position,72);
-                            buffer.put((byte)'\r');
-                            buffer.put((byte)'\n');
+                            buffer.put(rotation,position,72);*/
+                            buffer.put((byte)'o');
+                            buffer.put((byte)'k');
                             buffer.flip();
+                            break ;
                         }
+                        /*buffer.put((byte)'\r');
+                        buffer.put((byte)'\t');
+                        buffer.flip();*/
                         client.write(buffer);
                     }
                 }
@@ -98,6 +102,7 @@ public class ChargenServer {
                     }catch(IOException cex){}
                 }
             }
+            System.out.println("循环");
         }
     }
 }

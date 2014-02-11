@@ -20,23 +20,31 @@ public class FileChannel {
         /*System.out.println((byte)' ');
         System.out.println((byte)'~');*/
         //System.out.println(33-' ');
-        RandomAccessFile aFile = new RandomAccessFile("test.txt", "rw");
+        //读取文件
+        RandomAccessFile aFile = new RandomAccessFile(".gitignore", "rw");
+        //获取通道
         java.nio.channels.FileChannel inChannel = aFile.getChannel();
 
         ByteBuffer buf = ByteBuffer.allocate(48);
 
-        int bytesRead = inChannel.read(buf);
-        while (bytesRead != -1) {
 
-            System.out.println("Read " + bytesRead);
+        /*System.out.println("Read " + bytesRead);
+        buf.flip();
+        while (buf.hasRemaining()){
+            System.out.print((char)buf.get());
+        }
+        buf.clear();*/
+
+        while (inChannel.read(buf)!=-1) {
+
             buf.flip();
 
-            while(buf.hasRemaining()){
+            while(buf.hasRemaining()) {
                 System.out.print((char) buf.get());
             }
 
+            //buf.compact();
             buf.clear();
-            bytesRead = inChannel.read(buf);
         }
         aFile.close();
     }
