@@ -59,9 +59,11 @@ public class EchoServer {
                     // Check what event is available and deal with it
                     if (key.isAcceptable()) {
                         accept(key);
-                    } else if (key.isReadable()) {
+                    }
+                    if (key.isReadable()) {
                         read(key);
-                    } else if (key.isWritable()) {
+                    }
+                    if (key.isWritable()) {
                         write(key);
                     }
                 }
