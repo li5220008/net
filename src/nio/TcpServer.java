@@ -3,10 +3,11 @@ package nio;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,9 +27,8 @@ public class TcpServer {
         while (true) {
             //选择感兴趣的事件
             selector.select();
-            Set<SelectionKey> selectionKeys = selector.keys();
+            Set<SelectionKey> selectionKeys = selector.selectedKeys();
             Iterator<SelectionKey> iterator = selectionKeys.iterator();
-            ByteBuffer reBuf = ByteBuffer.allocate(1024);
             while (iterator.hasNext()){
                 SelectionKey key = iterator.next();
                 iterator.remove();
@@ -39,43 +39,88 @@ public class TcpServer {
                         //获取到一个通道
                         SocketChannel client = channel.accept();
                         System.out.println("Accepted connection from " + client);
-                        /*ByteBuffer buf = ByteBuffer.allocate(1024);
-                        while (client.read(buf) != -1) {
-                            //翻转准备缓冲区
-                            buf.flip();
-                            //循环从缓冲区读出
-                            while (buf.hasRemaining()){
-                                char c =(char) buf.get();
-                                System.out.print(c);
-                                reBuf.put((byte)changeChar(c));
-                            }
-                            //重置缓冲区
-                            buf.clear();
-                        }*/
-                        if(client !=null){
-                            client.configureBlocking(false);
-                            SelectionKey key2 = client.register(selector, SelectionKey.OP_WRITE);
-                            reBuf.put((byte)'o');
-                            reBuf.put((byte)'k');
-                            reBuf.flip();
-                            key2.attach(reBuf);
-                        }
-                    }else if(key.isWritable()){
+                        //printChannel(client);
+                        client.configureBlocking(false);
+                        //List arrays = Arrays.asList(1,2,3,4);
+                        ByteBuffer buffer = ByteBuffer.wrap("hell word!".getBytes());
+
+                        client.register(selector, SelectionKey.OP_READ,buffer);
+                    }
+                    if(key.isReadable()){
                         SocketChannel client = (SocketChannel)key.channel();
                         ByteBuffer buffer = (ByteBuffer)key.attachment();
-                        buffer.rewind();
-                        buffer.put((byte)'o');
-                        buffer.put((byte)'k');
+                        client.register(selector, SelectionKey.OP_WRITE,buffer);
+                        // 改变自身关注事件，可以用位或操作|组合时间
+                        //key.interestOps(SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+                    }
+                    if(key.isWritable()){
+                        SocketChannel client = (SocketChannel)key.channel();
+                        ByteBuffer buffer = (ByteBuffer)key.attachment();
+                        //List list = (List)key.attachment();
+                        //System.out.println(list);
+                        //buffer.clear();
+                        //ByteBuffer buffer = ByteBuffer.wrap("ok".getBytes());
+                        //ByteBuffer buffer = ByteBuffer.allocate(100);
+                        /*while (client.read(buffer)!=-1){
+                            buffer.clear();
+                            client.write(buffer);
+                        }*/
+                        //printBuffer(buffer);
+                        buffer.clear();
                         client.write(buffer);
+                        key.interestOps(SelectionKey.OP_READ);
+                        /*SocketChannel socketChannel = (SocketChannel) key.channel();
+                        ByteBuffer dummyResponse = ByteBuffer.wrap("ok".getBytes("UTF-8"));
+
+                        socketChannel.write(dummyResponse);
+                        if (dummyResponse.remaining() > 0) {
+                            System.err.print("Filled UP");
+                        }
+
+                        key.interestOps(SelectionKey.OP_READ);*/
                     }
                 }catch(IOException ex){
                     key.cancel();
                     try{
                         key.channel().close();
-                    }catch(IOException cex){}
+                    }catch(IOException e){
+                        e.printStackTrace();
+                    }
                 }
             }
         }
+       /* Selector selector = Selector.open();
+// 创建一个套接字通道，注意这里必须使用无参形式
+        SocketChannel channel = SocketChannel.open();
+// 设置为非阻塞模式，这个方法必须在实际连接之前调用(所以open的时候不能提供服务器地址，否则会自动连接)
+        channel.configureBlocking(false);
+// 连接服务器，由于是非阻塞模式，这个方法会发起连接请求，并直接返回false(阻塞模式是一直等到链接成功并返回是否成功)
+        channel.connect(new InetSocketAddress("127.0.0.1", 7777));
+// 注册关联链接状态
+        channel.register(selector, SelectionKey.OP_CONNECT);
+        while (true) {
+            // 前略 和服务器端的类似
+            // ...
+            // 获取发生了关注时间的Key集合，每个SelectionKey对应了注册的一个通道
+            Set<SelectionKey> keys = selector.selectedKeys();
+            for (SelectionKey key : keys) {
+                // OP_CONNECT 两种情况，链接成功或失败这个方法都会返回true
+                if (key.isConnectable()) {
+                    // 由于非阻塞模式，connect只管发起连接请求，finishConnect()方法会阻塞到链接结束并返回是否成功
+                    // 另外还有一个isConnectionPending()返回的是是否处于正在连接状态(还在三次握手中)
+                    if (channel.finishConnect()) {
+                        // 链接成功了可以做一些自己的处理，略
+                        // ...
+                        // 处理完后必须吧OP_CONNECT关注去掉，改为关注OP_READ
+                        key.interestOps(SelectionKey.OP_READ);
+                    }
+                }
+                // 后略 和服务器端的类似
+                // ...
+            }
+        }*/
+
+
 
         //serverChannel.register(selector, SelectionKey.OP_ACCEPT);
 
@@ -123,6 +168,38 @@ public class TcpServer {
         }*/
         //serverChannel.close();
     }
+
+    private static void printChannel(SocketChannel client) throws IOException {
+        ByteBuffer buf = ByteBuffer.allocate(1024);
+        while (client.read(buf) != -1) {
+            //翻转准备缓冲区
+            buf.flip();
+            //循环从缓冲区读出
+            while (buf.hasRemaining()){
+                char c =(char) buf.get();
+                System.out.print(c);
+            }
+            //重置缓冲区
+            buf.clear();
+        }
+    }
+    private static void printBuffer(ByteBuffer buffer){
+        if(buffer !=null){
+            //翻转准备缓冲区
+            //buffer.flip();
+            //循环从缓冲区读出
+            while (buffer.hasRemaining()){
+                char c =(char) buffer.get();
+                System.out.print(c);
+            }
+            //重置缓冲区
+            buffer.clear();
+
+
+        }
+
+    }
+
     //大小写转换一下
     public static char changeChar(char c){
         if (c >= 'A' && c <= 'Z') {

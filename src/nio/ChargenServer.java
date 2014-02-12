@@ -1,11 +1,5 @@
 package nio;
 
-/**
- * Desc:
- * User: weiguili(li5220008@gmail.com)
- * Date: 14-2-10
- * Time: 上午9:22
- */
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -70,7 +64,7 @@ public class ChargenServer {
                         client.configureBlocking(false);
                         SelectionKey key2 = client.register(selector, SelectionKey.OP_WRITE);
                         ByteBuffer buffer = ByteBuffer.allocate(74);
-                        //buffer.put(rotation,0,72);
+                        buffer.put(rotation,0,72);
                         buffer.put((byte)'\r');
                         buffer.put((byte)'\n');
                         buffer.flip();
@@ -80,18 +74,14 @@ public class ChargenServer {
                         ByteBuffer buffer = (ByteBuffer)key.attachment();
                         if(!buffer.hasRemaining()){
                             buffer.rewind();
-                            /*int first = buffer.get();
+                            int first = buffer.get();
                             buffer.rewind();
                             int position = first - ' ' + 1;
-                            buffer.put(rotation,position,72);*/
-                            buffer.put((byte)'o');
-                            buffer.put((byte)'k');
+                            buffer.put(rotation,position,72);
+                            buffer.put((byte)'\r');
+                            buffer.put((byte)'\n');
                             buffer.flip();
-                            break ;
                         }
-                        /*buffer.put((byte)'\r');
-                        buffer.put((byte)'\t');
-                        buffer.flip();*/
                         client.write(buffer);
                     }
                 }
@@ -102,7 +92,6 @@ public class ChargenServer {
                     }catch(IOException cex){}
                 }
             }
-            System.out.println("循环");
         }
     }
 }
