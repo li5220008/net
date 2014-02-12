@@ -139,7 +139,8 @@ public class EchoServer {
         ServerSocketChannel serverChannel = ServerSocketChannel.open();
         serverChannel.configureBlocking(false);
 
-        InetSocketAddress isa = new InetSocketAddress(hostAddress, port);
+        //InetSocketAddress isa = new InetSocketAddress(hostAddress, port);
+        InetSocketAddress isa = new InetSocketAddress(port);
         serverChannel.socket().bind(isa);
         serverChannel.register(socketSelector, SelectionKey.OP_ACCEPT);
         return socketSelector;
