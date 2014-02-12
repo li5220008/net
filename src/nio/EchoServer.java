@@ -94,7 +94,7 @@ public class EchoServer {
         readBuffer.clear();
 
         // Attempt to read off the channel
-        int numRead;
+        /*int numRead;
         try {
             numRead = socketChannel.read(readBuffer);
         } catch (IOException e) {
@@ -111,7 +111,7 @@ public class EchoServer {
             key.cancel();
 
             return;
-        }
+        }*/
 
         socketChannel.register(selector, SelectionKey.OP_WRITE);
 
@@ -119,7 +119,7 @@ public class EchoServer {
         if (numMessages%100000 == 0) {
             long elapsed = System.currentTimeMillis() - loopTime;
             loopTime = System.currentTimeMillis();
-            System.out.println(elapsed);
+            System.out.println("time passed"+elapsed);
         }
     }
 
