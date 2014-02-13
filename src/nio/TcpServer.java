@@ -202,15 +202,16 @@ public class TcpServer {
 
     //大小写转换一下
     public static char changeChar(char c){
-        if (c >= 'A' && c <= 'Z') {
+        /*if (c >= 'A' && c <= 'Z') {
             c += 32;
-            /*System.out.println("这里的大写" + (char) (c - 32) + "被转换成了" + c);
-            System.out.println("这里的大写" + (c - 32) + "被转换成了" + c);*/
+            *//*System.out.println("这里的大写" + (char) (c - 32) + "被转换成了" + c);
+            System.out.println("这里的大写" + (c - 32) + "被转换成了" + c);*//*
         } else if (c >= 'a' && c <= 'z') {
             c -= 32;
-            /*System.out.println("这里的小写" + (char) (c + 32) + "被转换成了" + c);
-            System.out.println("这里的小写" + (c + 32) + "被转换成了" + c);*/
+            *//*System.out.println("这里的小写" + (char) (c + 32) + "被转换成了" + c);
+            System.out.println("这里的小写" + (c + 32) + "被转换成了" + c);*//*
         }
-        return c;
+        return c;*/
+        return Character.toUpperCase(c);
     }
 }
